@@ -68,7 +68,7 @@ const Stage = styled.div`
     align-items:center;
     color:#FFFFFF;
     margin:auto 2px;
-    overflow-y:scroll;
+    overflow-y:auto;
 `;
 
 export default DropTarget(ItemTypes.TASK, squareTarget, collect)(TaskStage);

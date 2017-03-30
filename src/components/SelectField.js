@@ -95,6 +95,7 @@ const Input = styled.div`
     padding:6px 8px;
     outline:none;
     font-size:${p => p.theme.text.regular};
+    background-color:#FFFFFF;
 `;
 
 const Icon = styled.i`

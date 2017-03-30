@@ -142,6 +142,7 @@ const ContentContainer = styled.div`
 
 const CommentContainer = styled.div`
     flex:1;
+    align-selft:flex-end;
     
 `;
 

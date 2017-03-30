@@ -15,7 +15,7 @@ const Container = styled.div`
     margin:0 auto;
     font-weight: 700;
     font-style: normal;
-    font-size: 40px;
+    font-size: 32px;
     line-height: 1.04;
     letter-spacing: -.028em;
     word-break: break-word;
@@ -23,7 +23,7 @@ const Container = styled.div`
 
    ${media.kindle`
         font-style: normal;
-        font-size: 32px;
+        font-size: 24px;
         background-size: 2px 1px;
         background-position: 0 1.03em;
    `}

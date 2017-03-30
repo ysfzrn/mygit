@@ -97,7 +97,7 @@ class Issue extends Component {
       <div className="col col-xs-12 col-sm-11 ">
 
         <Header>
-          <h2>Issue</h2>
+          <h2>{issueform.category==="I" ? "Issue" : "Duyuru" }</h2>
           <Button onClick={this.handleSave} style={{ width: "30%" }}>
             Gönder
           </Button>

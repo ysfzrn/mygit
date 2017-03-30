@@ -65,7 +65,8 @@ const AppBarContainer = styled.div`
 `;
 
 const MainContainer = styled.div`
-    background-color:#EEEEEE;
+    background-color:#eeeeee;
+    background-size: 100% 80%;
 `;
 
 const mapStateToProps = (state, ownProps) => {

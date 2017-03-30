@@ -8,14 +8,25 @@ import "../public/bootstrap.min.css";
 import '../public/matfont/css/material-design-iconic-font.min.css'
 
 injectGlobal`
-    body {
-      font-family: Roboto, sans-serif;
+    html {
+        line-height: 1.15; 
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        font-family: Roboto, sans-serif, Segoe UI;
         margin: 0;
         padding: 0;
-        height:100%;
         overflow-x: hidden;
         text-rendering: optimizeLegibility;
-        
+    }
+
+    body{
+    	display:flex;
+        flex-direction:column;
+    }
+
+    .rdw-editor-wrapper{
+    	background-color:#FFFFFF;
+    	min-height:200px; 
     }
 `;
 

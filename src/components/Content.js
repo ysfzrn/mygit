@@ -11,10 +11,10 @@ const Content = (props) => {
 const Container = styled.div`   
    max-width:740px;
    margin:0 auto;
-   font-family: Roboto, sans-serif;
    padding:0px 20px;
    font-size:16px;
    font-weight: 400;
+   font-family: Roboto, sans-serif, Verdana,impact, Arial;
    line-height:1.58;
    letter-spacing:-.003em;
    --x-height-multiplier: 0.35;

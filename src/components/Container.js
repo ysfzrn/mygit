@@ -12,12 +12,10 @@ const Container = (props) => {
 
 const MyContainer = styled.div`
    width:100%;
-   box-sizing: border-box;
    margin:0 auto;
    display:flex;
    flex-direction:column;
    flex:1;
-   min-height:100vh;
    background-color:#eeeeee;
    
 
