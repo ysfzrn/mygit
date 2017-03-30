@@ -5,7 +5,11 @@ var defaultState = {
   status: "all",
   offset: 0,
   count: 0,
-  sum:0
+  sum:0,
+  total:0,
+  totalopen:0,
+  totalclose:0,
+  totalannounce:0
 };
 
 module.exports = (state = defaultState, action) => {
@@ -21,7 +25,8 @@ module.exports = (state = defaultState, action) => {
       return {
         ...state,
         loading: false,
-        issues: [...state.issues,...action.issues]
+        issues: [...state.issues,...action.issues.data],
+        total:action.issues.total
       };
     case "ISSUE_FETCH_FILTER_REQUESTED":
       return{
@@ -34,7 +39,7 @@ module.exports = (state = defaultState, action) => {
       return{
          ...state,
          loading:false,
-         issues:action.issues,
+         issues:action.issues.data,
       }
     case "ISSUE_FETCH_SOCKET_REQUESTED":
       return{
@@ -46,7 +51,8 @@ module.exports = (state = defaultState, action) => {
      case "ISSUE_FETCH_SOCKET_DONE":
       return{
          ...state,
-         issues: action.issues,
+         issues: action.issues.data,
+         total:action.issues.total
      } 
 
      case "ISSUE_FETCH_MORE_REQUESTED":
@@ -58,7 +64,7 @@ module.exports = (state = defaultState, action) => {
      case "ISSUE_FETCH_MORE_DONE":
       return{
          ...state,
-         issues: [...state.issues,...action.issues],
+         issues: [...state.issues,...action.issues.data],
      } 
 
 
@@ -82,23 +88,30 @@ module.exports = (state = defaultState, action) => {
          ...state,
         sum:action.sum
        }
+    
+    case "GET_COUNT_ISSUE_CLOSE_DONE":
+       return {
+          ...state,
+          totalclose:action.closecount
+       }
+    
+    case "GET_COUNT_ISSUE_OPEN_DONE":
+       return {
+          ...state,
+          totalopen:action.opencount
+       }
+
+    case "GET_COUNT_ISSUE_ANNOUNCE_DONE":
+       return {
+          ...state,
+          totalannounce:action.announcecount
+       }
+
     default:
       return state;
   }
 };
 
-function addIssue(state, action) {
-  state.map(a => {
-    if (a._id === action._id) {
-      return state;
-    }
-  });
-
-  return {
-    ...state,
-    issues: [...action]
-  };
-}
 
 function reducer1(state, action) {
   switch (action.type) {

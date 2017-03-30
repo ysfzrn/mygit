@@ -36,9 +36,11 @@ export function createPost(app, user_id, posttype) {
   return postitems.create({ user_id, posttype }).then((data, err) => data);
 }
 
-export function createcomment(app, user_id,relatedid,text) {
+export function createcomment(app, user_id, relatedid, text) {
   const comments = app.service("comments");
-  return comments.create({ user_id, relatedid,text }).then((data, err) => data);
+  return comments
+    .create({ user_id, relatedid, text })
+    .then((data, err) => data);
 }
 
 export function createissue(app, title, text, status, postid, category) {
@@ -76,7 +78,7 @@ export function fetchIssues(app, offset, filter, status, token) {
         $sort: { updatedAt: -1 }
       }
     })
-    .then((data, err) => data.data);
+    .then((data, err) => data);
 }
 
 export function getselectedissue(app, issue_id) {
@@ -97,6 +99,19 @@ export function getSumIssues(app) {
     .find({
       query: {
         status: true
+      }
+    })
+    .then((data, err) => data.total);
+}
+
+export function getCountIssueItems(app, category, status) {
+  const issues = app.service("issues");
+
+  return issues
+    .find({
+      query: {
+        category: category,
+        status: category === "I" ? status : { $in: [true, false] }
       }
     })
     .then((data, err) => data.total);

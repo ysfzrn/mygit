@@ -1,23 +1,25 @@
 import React from "react"
 import styled from "styled-components"
-import { API_URL } from "../util/api"
-import { flexCenter } from "../util/sharedStyle"
 import moment from "moment"
 import Circle from './Circle'
 import Image from './Image'
+import MobileHidden from './MobileHidden'
+
 
 const Card = props => {
   var now = moment.utc(props.item.updatedAt).fromNow();
   return (
     <MyCard {...props} onClick={()=>props.onClick(props.item._id)}>
-
+     
+     <MobileHidden>
       <Circle size={80}>
         {props.item.postitem.user.image
-          ? <Image src={props.item.postitem.user.image} borderRadius={40} />
+          ?<Image src={props.item.postitem.user.image} borderRadius={40} />
           : <div>
               {props.item.postitem.user.name.substr(0, 1).toUpperCase()}{" "}
             </div>}
       </Circle>
+     </MobileHidden> 
 
       <Header>
         <Owner>
@@ -65,6 +67,7 @@ const MyCard = styled.div`
 		 cursor:pointer;
 		 background-color:#e0e0e0;
 	  }
+
     
 `;
 const Header = styled.div`

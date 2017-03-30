@@ -8,7 +8,6 @@ import { requireAuthentication } from "./containers/PrivateRoute";
 import Template from "./containers/Template";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
-import Home from "./containers/Home";
 import { theme } from "./util/theme";
 
 const Root = () => {

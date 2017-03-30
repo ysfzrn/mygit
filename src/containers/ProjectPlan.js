@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import {
   Button,
-  Task,
   TaskStage,
   TextInput,
   TextArea,
-  FormContainer,
   MyModal
 } from "../components";
 import { flexCenter } from "../util/sharedStyle";

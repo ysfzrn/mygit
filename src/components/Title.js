@@ -12,7 +12,7 @@ const Title = (props) => {
 
 const Container = styled.div`
     max-width:740px;
-    margin:0 auto;
+    margin:40px auto;
     font-weight: 700;
     font-style: normal;
     font-size: 32px;

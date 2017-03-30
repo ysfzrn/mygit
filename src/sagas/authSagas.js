@@ -1,4 +1,4 @@
-import { fork, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { signup, login, logout, updateUser, uploadfile } from "./services";
 import { push } from "react-router-redux";
 import store from "../store";

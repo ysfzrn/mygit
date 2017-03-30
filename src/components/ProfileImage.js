@@ -1,19 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import { flexCenter } from "../util/sharedStyle";
 let ClickOutComponent = require("react-onclickout");
 import { API_URL } from "../util/api";
 
 class ProfileImage extends ClickOutComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      open: false,
-      items: [{ text: "Profil Ayarları", to: "/app/profile" }]
-    };
-  }
-
   handleOpen = () => {
     this.setState({ open: !this.state.open });
   };
@@ -31,7 +22,6 @@ class ProfileImage extends ClickOutComponent {
 
   render() {
     const { auth } = this.props;
-    const { items, open } = this.state;
     return (
       <Container>
         <Circle onClick={this.handleOpen}>
@@ -60,9 +50,6 @@ const Img = styled.img`
 	height:100%;
 `;
 
-const Icon = styled.i`
-    margin-left:4px;    
-`;
 
 const Circle = styled.div`
  ${flexCenter};

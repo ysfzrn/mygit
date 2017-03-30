@@ -21,6 +21,9 @@ import Content from "./Content";
 import Image from "./Image";
 import Circle from "./Circle";
 import PieChart from "./PieChart";
+import TabCard from "./TabCard";
+import MobileHidden from "./MobileHidden";
+import DesktopHidden from "./DesktopHidden";
 
 export {
   TextInput,
@@ -45,5 +48,8 @@ export {
   Content,
   Image,
   Circle,
-  PieChart
+  PieChart,
+  TabCard,
+  MobileHidden,
+  DesktopHidden
 };

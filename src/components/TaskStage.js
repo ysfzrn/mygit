@@ -6,7 +6,6 @@ import { ItemTypes } from "./Constants";
 
 const squareTarget = {
   canDrop(props) {
-    //return canMoveKnight(props.x, props.y);
     return true;
   },
 
@@ -40,7 +39,7 @@ class TaskStage extends Component {
   };
 
   render() {
-    const { item, tasklist, connectDropTarget } = this.props;
+    const { item, connectDropTarget } = this.props;
    
     return connectDropTarget(
       <div>
@@ -60,8 +59,7 @@ TaskStage.propTypes = {
 const Stage = styled.div`
     min-width:250px;
     width:250px;
-    min-height:400px;
-    height:100%;
+    height:80vh;
     background-color:${p => p.backgroundColor} ;
     display:flex;
     flex-direction:column;

@@ -43,7 +43,7 @@ class Issue extends Component {
 
   handleSelectInput=(value,field)=>{
     let _cat = this.state.categories;
-    _cat.map((item, i)=>{
+    let x = _cat.map((item, i)=>{
        if(item.value===value){
           item.selected=true;
        }else{
@@ -90,7 +90,7 @@ class Issue extends Component {
   };
 
   render() {
-    const { issueform, auth } = this.props;
+    const { issueform } = this.props;
     const { categories } = this.state;
     gid = issueform.addedfile;
     return (

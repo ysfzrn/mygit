@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../actions";
 import styled from "styled-components";
-import media from "../util/media";
 import { API_URL } from "../util/api";
-import { flexCenter } from "../util/sharedStyle";
 import moment from "moment";
 import {
   MyEditor,
@@ -67,7 +65,7 @@ class IssueView extends Component {
   };
 
   render() {
-    const { issueform, auth, selectedissue, commentform } = this.props;
+    const { issueform, selectedissue, commentform } = this.props;
     const now = moment.utc(selectedissue.issue.updatedAt).fromNow();
     gid = issueform.addedfile;
 

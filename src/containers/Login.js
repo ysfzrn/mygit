@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import * as actionCreators from "../actions";
 import { bindActionCreators } from "redux";
 import styled from "styled-components";
-import { flexCenter, fadeIn } from "../util/sharedStyle";
+import { fadeIn } from "../util/sharedStyle";
 import {
   TextInput,
   Button,

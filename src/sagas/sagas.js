@@ -1,7 +1,6 @@
-import { fork, call, put, takeEvery } from "redux-saga/effects";
+import { fork, takeEvery } from "redux-saga/effects";
 import { push } from "react-router-redux";
 import store from "../store";
-import { addAlert } from "../actions";
 import {
   fetchIssuesSaga,
   getSumIssuesSaga,
@@ -10,13 +9,13 @@ import {
   fetchIssuesFilterSaga,
   fetchIssuesSocketSaga,
   fetchIssuesMoreSaga,
-  fetchSelectedIssueSaga
+  fetchSelectedIssueSaga,
+  getCountIssueItemsSaga
 } from "./fetchSagas";
 import {
   addIssueSaga,
   addIssueFileSaga,
   addPostSaga,
-  addingIssueSaga,
   addTaskSaga,
   updateTaskSaga,
   addCommentSaga
@@ -29,15 +28,7 @@ import {
   addFileSaga,
   updateUserSaga
 } from "./authSagas";
-import {
-  signup,
-  login,
-  logout,
-  uploadfile,
-  updateUser,
-  createPost,
-  createissue
-} from "./services";
+
 
 function* toPushSaga(feathersApp) {
   yield takeEvery("TO_PUSH", tryToPush, feathersApp);
@@ -74,6 +65,7 @@ export default function* root(feathersApp) {
     fork(addTaskSaga, feathersApp),
     fork(fetchTaskSaga, feathersApp),
     fork(updateTaskSaga, feathersApp),
-    fork(addCommentSaga, feathersApp)
+    fork(addCommentSaga, feathersApp),
+    fork(getCountIssueItemsSaga,feathersApp )
   ];
 }

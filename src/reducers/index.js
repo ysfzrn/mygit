@@ -7,7 +7,7 @@ import taskform from "./taskform";
 import alert from "./alert";
 import issueform from "./issueform";
 import issues from "./issues";
-import tasks, * as fromTasks from "./tasks";
+import tasks from "./tasks";
 import selectedissue from "./selectedissue";
 import commentform from "./commentform";
 import comments from "./comments";

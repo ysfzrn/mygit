@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ProfileImage } from "../components";
 import styled from "styled-components";
-import { API_PUBLIC } from "../util/api";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../actions";
 

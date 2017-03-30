@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import { flexCenter } from "../util/sharedStyle";
 let ClickOutComponent = require("react-onclickout");
@@ -33,7 +33,7 @@ class ProfileImage extends ClickOutComponent {
 
   render() {
     const { auth } = this.props;
-    const { items, open} = this.state;
+    const {  open} = this.state;
     return (
       <Container>
         <Circle onClick={this.handleOpen}>

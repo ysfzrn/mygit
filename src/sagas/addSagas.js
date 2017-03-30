@@ -1,10 +1,8 @@
-import { fork, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import {
   uploadfile,
-  updateUser,
   createPost,
   createissue,
-  fetchSelectedIssue,
   createtask,
   updatetask,
   createcomment

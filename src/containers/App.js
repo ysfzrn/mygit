@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../actions";
 import { app } from "../store";
-import { Card, LoadButton, PieChart } from "../components";
-import FaRoad from "../../public/fa-road.png";
+import { Card, LoadButton, PieChart, TabCard,DesktopHidden } from "../components";
 import { Link } from "react-router-dom";
 import { percentDoneTask } from "../reducers";
+import media from "../util/media";
 
 class App extends Component {
   componentWillMount() {
-    const { issues, fetchissues, auth,fetchTasks } = this.props;
+    const {  fetchTasks } = this.props;
     const issuesService = app.service("issues");
     // debugger;
     if (issuesService.connection.disconnected) {
@@ -23,18 +23,18 @@ class App extends Component {
 
     const taskService = app.service("tasks");
     if (taskService.connection.disconnected) {
-         taskService.on("created", item => fetchTasks());
-         taskService.on("patched", item => fetchTasks());
-         taskService.on("updated", item => fetchTasks());
+      taskService.on("created", item => fetchTasks());
+      taskService.on("patched", item => fetchTasks());
+      taskService.on("updated", item => fetchTasks());
     }
-
-    
   }
 
   componentDidMount() {
-    const {fetchTasks} = this.props;
+    const { fetchTasks,getcountissues } = this.props;
     fetchTasks();
+    getcountissues();
     this.handleFetch();
+
     //this.props.getsumissues();
   }
 
@@ -46,8 +46,9 @@ class App extends Component {
   };
 
   handleAddingIssue = item => {
-    const { addingIssue } = this.props;
+    const { addingIssue,getcountissues } = this.props;
     addingIssue();
+    getcountissues();
   };
 
   handleFetchSocket = () => {
@@ -80,52 +81,57 @@ class App extends Component {
   };
 
   render() {
-    const { issues,percentdonetask } = this.props;
+    const { issues, percentdonetask } = this.props;
     return (
       <Container>
-          <GraphsContainer>
-            <Link to="/app/projectplan" style={{ textDecoration: "none" }}>
-              <ProjectPlan>
-                <PieChart percent={percentdonetask} />
-              </ProjectPlan>
-            </Link>
-          </GraphsContainer>
+       <DesktopHidden> 
+        <GraphsContainer>
+          <Link to="/app/projectplan" style={{ textDecoration: "none" }}>
+            <ProjectPlan>
+              <PieChart percent={percentdonetask} />
+            </ProjectPlan>
+          </Link>
+        </GraphsContainer>
+       </DesktopHidden> 
 
-        <FilterContainer
-          className="col col-sm-12"
-        >
-          <Filter
+        <FilterContainer className="col col-sm-12">
+
+          <TabCard
+            text="Hepsi"
+            count={issues.total}
+            status={issues.status}
+            filter="all"
+            backgroundColor="#2196F3"
             onClick={() => this.handleStatus("all", "status")}
-            c={issues.status == "all" ? "#FFFFFF" : "#bdbdbd"}
-            style={{backgroundColor:'#2196F3'}}
-          >
-            <Count>126</Count>
-            <div>Hepsi</div>
-          </Filter>
-          <Filter
+          />
+
+          <TabCard
+            text="Açık"
+            count={issues.totalopen}
+            status={issues.status}
+            filter="open"
+            backgroundColor="#F44336"
             onClick={() => this.handleStatus("open", "status")}
-            c={issues.status == "open" ? "#FFFFFF" : "#bdbdbd"}
-            style={{backgroundColor:'#F44336'}}
-          >
-            <Count>94</Count>
-            <div>Açık</div>
-          </Filter>
-          <Filter
+          />
+
+          <TabCard
+            text="Kapalı"
+            count={issues.totalclose}
+            status={issues.status}
+            filter="close"
+            backgroundColor="#4CAF50"
             onClick={() => this.handleStatus("close", "status")}
-            c={issues.status == "close" ? "#FFFFFF" : "#bdbdbd"}
-            style={{backgroundColor:'#4CAF50'}}
-          >
-            <Count>16</Count>
-            <div>Kapalı</div>
-          </Filter>
-          <Filter
+          />
+
+          <TabCard
+            text="Duyuru"
+            count={issues.totalannounce}
+            status={issues.status}
+            filter="warning"
+            backgroundColor="#FFC107"
             onClick={() => this.handleStatus("warning", "status")}
-            c={issues.status == "warning" ? "#FFFFFF" : "#bdbdbd"}
-            style={{backgroundColor:'#FFC107'}}
-          >
-            <Count>16</Count>
-            <div>Duyuru</div>
-          </Filter>
+          />
+
         </FilterContainer>
 
         <IssueContainer className="col col-sm-12">
@@ -158,7 +164,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.auth,
     issues: state.issues,
-    percentdonetask:percentDoneTask(state)
+    percentdonetask: percentDoneTask(state)
   };
 };
 
@@ -185,23 +191,6 @@ const FilterContainer = styled.div`
    margin-bottom:34px;
 `;
 
-const Count = styled.div`
-  font-size:32px;
-`
-
-const Filter = styled.div`
-   flex:1;
-   cursor:pointer;
-   color:${p => p.c};
-   background-color:blue;
-   padding-top:17px;
-   padding-bottom:7px;
-   display:flex;
-   flex-direction:column;
-   align-items:center;
-   justify-content:center;
-`;
-
 const IssueContainer = styled.div`
    max-width:800px;
 `;
@@ -209,23 +198,14 @@ const IssueContainer = styled.div`
 const GraphsContainer = styled.div`
     margin:46px auto;
     position:fixed;
-    right:60px;
+    right:10%;
+
+     ${media.giant`
+		    right:5%;
+     `}
+
 `;
 
-
-const Status = styled.div`
-   position:absolute;
-   top:0;
-   bottom:0;
-   right:0;
-   width:25px;
-   background-color:${p => p.backgroundColor}
-`;
-const Charts = styled.div`
-   display:flex;
-   flex-direction:row;
-   justify-content:space-around;
-`;
 //box-shadow:0 2px 4px 0 rgba(0,0,0,0.50), 0 2px 4px 0 rgba(0,0,0,0.50);
 const ProjectPlan = styled.div`
    cursor:pointer;

@@ -34,9 +34,9 @@ class Task extends Component {
           <Title> {taskitem.title} </Title>
           <Content>
             <Circle onClick={this.handleOpen}>
-              {taskitem.user.image
+              {taskitem.user
                 ? <Img src={`${API_URL}${taskitem.user.image}`} />
-                : <div>{taskitem.user.name.substr(0, 1).toUpperCase()} </div>}
+                : <div> ? </div>}
             </Circle>
             <Text> {taskitem.text.substr(0, 90)} </Text>
           </Content>
@@ -114,10 +114,6 @@ const Img = styled.img`
 const Text = styled.div`
     text-overflow: clip; 
 `;
-const Image = styled.div`
-    width:100%;
-	height:100%;
-    border-radius:40px;
-`;
+
 
 export default DragSource(ItemTypes.TASK, taskSource, collect)(Task);

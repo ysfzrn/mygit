@@ -1,13 +1,12 @@
-import { fork, call, put, takeEvery } from "redux-saga/effects";
+import {  call, put, takeEvery } from "redux-saga/effects";
 import {
   fetchIssues,
   getSumIssues,
   getusers,
   gettasks,
-  getselectedissue
+  getselectedissue,
+  getCountIssueItems
 } from "./services";
-import { push } from "react-router-redux";
-import store from "../store";
 import { addAlert } from "../actions";
 
 
@@ -135,6 +134,23 @@ function* callgetsumissues(feathersApp, action) {
   const sum = yield call(getSumIssues, feathersApp);
   yield put({ type: "GET_SUM_ISSUES_DONE", sum });
 }
+
+
+export function* getCountIssueItemsSaga(feathersApp){
+    yield takeEvery("GET_COUNT_ISSUE_ITEMS", callgetcountissueitems, feathersApp );
+}
+
+function* callgetcountissueitems( feathersApp, action ){
+    const closecount = yield call(getCountIssueItems, feathersApp, "I", false );
+    yield put({type:"GET_COUNT_ISSUE_CLOSE_DONE", closecount })
+
+    const opencount = yield call(getCountIssueItems, feathersApp, "I", true );
+    yield put({type:"GET_COUNT_ISSUE_OPEN_DONE", opencount })
+
+    const announcecount = yield call(getCountIssueItems, feathersApp, "A", null );
+    yield put({type:"GET_COUNT_ISSUE_ANNOUNCE_DONE", announcecount })
+}
+
 
 export function* fetchUserSaga(feathersApp) {
   yield takeEvery("USERS_FETCH_REQUESTED", callfetchusers, feathersApp);

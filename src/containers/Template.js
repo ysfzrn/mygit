@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../actions";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import App from "./App";
 import Profile from "./Profile";
 import Issue from "./Issue";
 import { AppBar } from "../components";
 import styled from "styled-components";
-import { requireAuthentication } from "./PrivateRoute";
 import ProjectPlan from "./ProjectPlan";
 import IssueView from "./IssueView";
 
@@ -24,7 +23,7 @@ class Template extends Component {
     logout();
   };
   render() {
-    const { match, auth } = this.props;
+    const { auth } = this.props;
     return (
       <Container className="col col-xs-12" style={{ padding: 0 }}>
         <AppBarContainer>
