@@ -51,7 +51,7 @@ const Container = styled.div`
    display:flex;
    flex:1;
    flex-direction:column;
-   
+   min-height:600px;
    align-items:center;
 `;
 
@@ -65,7 +65,6 @@ const AppBarContainer = styled.div`
 
 const MainContainer = styled.div`
     background-color:#eeeeee;
-    background-size: 100% 80%;
 `;
 
 const mapStateToProps = (state, ownProps) => {

@@ -4,6 +4,8 @@ import { ContentState,EditorState,convertFromHTML } from 'draft-js';
 import  { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
+const optionsComment= ['inline', 'fontSize','fontFamily','colorPicker', 'link', 'emoji','image','history'];
+const optionsIssue= ['inline', 'fontSize','fontFamily','list', 'colorPicker', 'link', 'emoji','image','history'];
 
 class MyEditor extends Component {
     
@@ -13,15 +15,15 @@ class MyEditor extends Component {
     }
   
    render() {
+    const {commentMode} = this.props;
     const blocksFromHTML = convertFromHTML(this.props.text);
     const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
     ); 
-    
+  
     const toolbar  = {
-          options: ['inline', 'fontSize','fontFamily','list', 'colorPicker', 'link', 'emoji','image','history'], 
-
+          options: commentMode ? optionsComment  : optionsIssue, 
           image: {
             urlEnabled: true,
             uploadEnabled: true,

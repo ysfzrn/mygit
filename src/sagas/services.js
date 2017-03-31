@@ -110,7 +110,7 @@ export function getCountIssueItems(app, category, status) {
   return issues
     .find({
       query: {
-        category: category,
+        category: category === null ? { $in: ['I', 'A'] } : category,
         status: category === "I" ? status : { $in: [true, false] }
       }
     })

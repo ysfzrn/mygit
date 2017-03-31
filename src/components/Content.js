@@ -4,7 +4,7 @@ import media from "../util/media";
 
 const Content = (props) => {
     return(
-        <Container dangerouslySetInnerHTML={props.createMarkup} />
+        <Container className="content" dangerouslySetInnerHTML={props.createMarkup} />
     )
 }
 

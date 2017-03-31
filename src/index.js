@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Root from "./Root";
 import { injectGlobal } from "styled-components";
 
-import "./index.css"
+
 import "../public/bootstrap.min.css";
 import '../public/matfont/css/material-design-iconic-font.min.css'
 
@@ -27,6 +27,14 @@ injectGlobal`
     .rdw-editor-wrapper{
     	background-color:#FFFFFF;
     	min-height:200px; 
+        margin-top:20px;
+        margin-bottom:20px;
+        border-radius:12px;
+    }
+
+    .content img{
+        width:100%;
+        height:100%;
     }
 `;
 

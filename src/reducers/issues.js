@@ -107,6 +107,12 @@ module.exports = (state = defaultState, action) => {
           totalannounce:action.announcecount
        }
 
+    case "GET_COUNT_ISSUE_ALL_DONE":
+       return {
+          ...state,
+          total:action.total
+       }
+
     default:
       return state;
   }

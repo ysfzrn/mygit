@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call,delay, put, takeEvery } from "redux-saga/effects";
 import {
   uploadfile,
   createPost,
@@ -77,7 +77,9 @@ function* addissue(feathersApp, action) {
       action.category
     );
     yield put({ type: "ISSUESAVE_SUCCESS" });
-    store.dispatch(push("/"));
+    setTimeout(()=>{
+       store.dispatch(push("/"))
+    },1000);
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }

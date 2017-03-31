@@ -141,6 +141,9 @@ export function* getCountIssueItemsSaga(feathersApp){
 }
 
 function* callgetcountissueitems( feathersApp, action ){
+    const total = yield call(getCountIssueItems, feathersApp, null, false );
+    yield put({type:"GET_COUNT_ISSUE_ALL_DONE", total })
+
     const closecount = yield call(getCountIssueItems, feathersApp, "I", false );
     yield put({type:"GET_COUNT_ISSUE_CLOSE_DONE", closecount })
 

@@ -106,7 +106,7 @@ class IssueView extends Component {
                   </Owner>
                 </Header>
                 <Title>{selectedissue.issue.title}</Title>
-                <Content createMarkup={this.createMarkup()} />
+                <Content className="content" createMarkup={this.createMarkup()} />
               </ContentContainer>
 
               <CommentContainer>
@@ -114,6 +114,7 @@ class IssueView extends Component {
                   <EditorContainer>
                     <MyEditor
                       text={commentform.text}
+                      commentMode={true}
                       onEditorStateChange={e =>
                         this.handleEditorInput(e, "text")}
                       placeholder="Buraya yorum yazabilirsin"
@@ -141,6 +142,7 @@ const ContentContainer = styled.div`
 const CommentContainer = styled.div`
     flex:1;
     align-selft:flex-end;
+    min-height:400px;
     
 `;
 
