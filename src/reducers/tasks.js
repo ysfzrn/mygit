@@ -1,7 +1,7 @@
 var defaultState = {
   loading: false,
   tasks: [],
-  total:0
+  total:0,
 };
 
 module.exports = (state = defaultState, action) => {

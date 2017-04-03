@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 const Label = styled.label`
     padding-bottom:5px;
-
+    font-weight:bold;
     font-size:${p => p.theme.text.regular};
     color:${p => p.theme.palette.textColor};
 `;

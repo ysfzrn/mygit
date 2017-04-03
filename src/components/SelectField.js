@@ -1,5 +1,7 @@
-import React  from "react";
+import React from "react";
 import styled from "styled-components";
+import Image from "./Image";
+import Circle from "./Circle";
 let ClickOutComponent = require("react-onclickout");
 
 class SelectField extends ClickOutComponent {
@@ -33,7 +35,16 @@ class SelectField extends ClickOutComponent {
         <Input>
           {options.map((item, i) => {
             if (item.selected) {
-              return <div key={i}>{item.label} </div>;
+              return (
+                <InputItem key={i}>
+                  {item.img
+                    ? <Circle size={30}>
+                        <Image src={item.img} borderRadius={15} />
+                      </Circle>
+                    : null}
+                  <Text>{item.label}</Text>{" "}
+                </InputItem>
+              );
             }
           })}
         </Input>
@@ -42,7 +53,12 @@ class SelectField extends ClickOutComponent {
           {options.map((item, i) => {
             return (
               <ListItem key={i} onClick={() => this.props.onSelected(item)}>
-                {item.label}
+                {item.img
+                  ? <Circle size={30}>
+                      <Image src={item.img} borderRadius={15} />
+                    </Circle>
+                  : null}
+                <Text>{item.label}</Text>
               </ListItem>
             );
           })}
@@ -61,13 +77,24 @@ const SelectContainer = styled.div`
     position:relative;
 `;
 
-const ListItem = styled.div`
+const ListItem = styled.div` 
+   display:flex;
+   flex-direction:row;
+   align-items:center;
+   min-height:34px;
    padding:10px 20px;
    font-size:14px;
 
    &:hover{
      background-color:#e0e0e0; 
    }
+`;
+
+const InputItem = styled.div` 
+   display:flex;
+   flex-direction:row;
+   align-items:center;
+   
 `;
 
 const Popover = styled.div`
@@ -87,6 +114,11 @@ const Label = styled.label`
     padding-bottom:5px;
     font-size:${p => p.theme.text.regular};
     color:${p => p.theme.palette.textColor};
+    font-weight:bold;
+`;
+
+const Text = styled.div`
+  padding-left:10px;
 `;
 
 const Input = styled.div`
@@ -94,6 +126,7 @@ const Input = styled.div`
     border-radius:${p => p.theme.TextInput.borderRadius};
     padding:6px 8px;
     outline:none;
+    min-height:34px;
     font-size:${p => p.theme.text.regular};
     background-color:#FFFFFF;
 `;

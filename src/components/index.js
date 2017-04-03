@@ -14,6 +14,7 @@ import LoadButton from "./LoadButton";
 import Task from "./Task";
 import TaskStage from "./TaskStage";
 import MyModal from "./MyModal";
+import MyModalAlert from "./MyModalAlert";
 import SelectField from "./SelectField";
 import Title from "./Title";
 import Container from "./Container";
@@ -24,6 +25,12 @@ import PieChart from "./PieChart";
 import TabCard from "./TabCard";
 import MobileHidden from "./MobileHidden";
 import DesktopHidden from "./DesktopHidden";
+import CommentCard from "./CommentCard";
+import IssueProfileImage from "./IssueProfileImage";
+import StatusOpen from "./StatusOpen";
+import StatusClose from "./StatusClose";
+import StatusAnnounce from "./StatusAnnounce";
+import IssueDeleteButton from './IssueDeleteButton'
 
 export {
   TextInput,
@@ -41,6 +48,7 @@ export {
   Task,
   TaskStage,
   MyModal,
+  MyModalAlert,
   TextArea,
   SelectField,
   Title,
@@ -51,5 +59,11 @@ export {
   PieChart,
   TabCard,
   MobileHidden,
-  DesktopHidden
+  DesktopHidden,
+  CommentCard,
+  IssueProfileImage,
+  StatusOpen,
+  StatusClose,
+  StatusAnnounce,
+  IssueDeleteButton
 };

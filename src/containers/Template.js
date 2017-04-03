@@ -10,9 +10,43 @@ import { AppBar } from "../components";
 import styled from "styled-components";
 import ProjectPlan from "./ProjectPlan";
 import IssueView from "./IssueView";
+import { app } from "../store";
+import {HOST_URL} from '../util/api'
 
 const Announce = () => <h1>Announce</h1>;
 class Template extends Component {
+  componentWillMount() {
+    /*const issuesService = app.service("issues");
+    if (issuesService.connection.disconnected) {
+      issuesService.on("created", item => this.handleAddingIssue(item));
+      issuesService.on("patched", item => this.handleIssueNotification(item));
+    }*/
+  }
+
+  componentDidMount() {
+    /*if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+    if (!Notification) {
+      alert(
+        " :( Masaüstü bildirimler bu browserda etkin değil. Lütfen Chrome kullanın!"
+      );
+    }*/
+  }
+
+  handleIssueNotification = (item) => {
+    const statutext = item.status ? "tekrar açıldı" : "kapatıldı"
+    var notification = new Notification('Issue kapatıldı', {
+	      icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple71/v4/5f/4b/7b/5f4b7b1e-b30a-fe81-6e9a-19f9fea82717/source/256x256bb.jpg',
+	      body: `${item.title} başlıklı issue ${statutext}`,
+        tag:"uniqueTag",
+        sound:('../../public/job-done.mp3')
+	    });
+    notification.onclick = function () {
+      window.open(`${HOST_URL}app/issueview/${item._id}`);      
+    };
+  };
+
   handleToPush = to => {
     const { toPush } = this.props;
     toPush(to);
@@ -33,7 +67,7 @@ class Template extends Component {
             handleLogOut={this.handleLogOut}
           />
         </AppBarContainer>
-        <MainContainer className="col col-xs-12" style={{ padding: '48px 0' }}>
+        <MainContainer className="col col-xs-12" style={{ padding: "48px 0" }}>
           <Route exact path="/app" component={App} />
           <Route path="/app/issue" component={Issue} />
           <Route path="/app/announce" component={Announce} />
@@ -41,7 +75,6 @@ class Template extends Component {
           <Route path="/app/projectplan" component={ProjectPlan} />
           <Route path="/app/issueview/:id" component={IssueView} />
         </MainContainer>
-
       </Container>
     );
   }

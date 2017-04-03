@@ -30,7 +30,14 @@ class TaskStage extends Component {
   renderList = id => {
     const task = this.props.tasklist.map((task, i) => {
       if (task.status === id) {
-        return <Task key={task._id} taskitem={task} onBeginningDrag={this.onBeginningDrag} />;
+        return (
+          <Task
+            onClick={this.props.onClick}
+            key={task._id}
+            taskitem={task}
+            onBeginningDrag={this.onBeginningDrag}
+          />
+        );
       } else {
         return null;
       }
@@ -40,7 +47,7 @@ class TaskStage extends Component {
 
   render() {
     const { item, connectDropTarget } = this.props;
-   
+
     return connectDropTarget(
       <div>
         <Stage backgroundColor={item.backgroundColor}>
@@ -58,8 +65,7 @@ TaskStage.propTypes = {
 
 const Stage = styled.div`
     min-width:250px;
-    width:250px;
-    height:80vh;
+    height:85vh;
     background-color:${p => p.backgroundColor} ;
     display:flex;
     flex-direction:column;

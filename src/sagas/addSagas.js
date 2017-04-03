@@ -1,11 +1,15 @@
-import { call,delay, put, takeEvery } from "redux-saga/effects";
+import { call, delay, put, takeEvery } from "redux-saga/effects";
 import {
   uploadfile,
   createPost,
   createissue,
   createtask,
   updatetask,
-  createcomment
+  updatetaskwithform,
+  createcomment,
+  removetask,
+  updateissue,
+  removeissue
 } from "./services";
 import { push } from "react-router-redux";
 import store from "../store";
@@ -77,13 +81,52 @@ function* addissue(feathersApp, action) {
       action.category
     );
     yield put({ type: "ISSUESAVE_SUCCESS" });
-    setTimeout(()=>{
-       store.dispatch(push("/"))
-    },1000);
+    setTimeout(
+      () => {
+        store.dispatch(push("/"));
+      },
+      2000
+    );
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }
 }
+
+/*******************updateIssue**************************/
+export function* updateIssueSaga(feathersApp) {
+  yield takeEvery("UPDATEISSUE_REQUESTED", patchissue, feathersApp);
+}
+
+function* patchissue(feathersApp, action) {
+  try {
+    yield call(updateissue, feathersApp, action.id, action.status);
+    const id = action.id;
+    const status = action.status;
+    yield put({ type: "UPDATEISSUE_SUCCESS", id, status });
+  } catch (error) {
+    yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
+  }
+}
+
+export function* removeIssueSaga(feathersApp) {
+  yield takeEvery("REMOVE_ISSUE", callremoveissue, feathersApp);
+}
+
+function* callremoveissue(feathersApp, action) {
+  try {
+    yield call(removeissue, feathersApp, action.id);
+    yield put({ type: "REMOVE_ISSUE_DONE" });
+    setTimeout(
+      () => {
+        store.dispatch(push("/"));
+      },
+      1000
+    );
+  } catch (error) {
+    yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
+  }
+}
+
 /**
  * adddingTask
  */
@@ -94,7 +137,7 @@ export function* addTaskSaga(feathersApp) {
 
 function* addtask(feathersApp, action) {
   try {
-    const task=yield call(
+    const task = yield call(
       createtask,
       feathersApp,
       action.title,
@@ -102,7 +145,7 @@ function* addtask(feathersApp, action) {
       action.user_id,
       action.status
     );
-    yield put({ type: "TASKSAVE_SUCCESS" ,task});
+    yield put({ type: "TASKSAVE_SUCCESS", task });
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }
@@ -124,6 +167,45 @@ function* patchtask(feathersApp, action) {
   }
 }
 
+export function* removeTaskSaga(feathersApp) {
+  yield takeEvery("TASKUP_REMOVE_REQUESTED", callremovetask, feathersApp);
+}
+
+function* callremovetask(feathersApp, action) {
+  try {
+    yield call(removetask, feathersApp, action.id, action.postid);
+    const id = action.id;
+    yield put({ type: "TASK_REMOVE_SUCCESS", id });
+  } catch (error) {
+    yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
+  }
+}
+
+export function* updateTaskWithFormSaga(feathersApp) {
+  yield takeEvery(
+    "TASKUPDATE_WITHFORM_REQUESTED",
+    patchtaskwithform,
+    feathersApp
+  );
+}
+
+function* patchtaskwithform(feathersApp, action) {
+  try {
+    yield call(
+      updatetaskwithform,
+      feathersApp,
+      action.id,
+      action.status,
+      action.title,
+      action.text,
+      action.user_id
+    );
+    yield put({ type: "TASKUPDATE_WITHFORM_SUCCESS" });
+  } catch (error) {
+    yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
+  }
+}
+
 /*******************addComment**************************/
 
 export function* addCommentSaga(feathersApp) {
@@ -139,7 +221,10 @@ function* addcomment(feathersApp, action) {
       action.relatedid,
       action.text
     );
-    yield put({ type: "COMMENTSAVE_DONE", comment });
+    const relatedid = comment.relatedid;
+
+    yield put({ type: "COMMENTSAVE_DONE", relatedid });
+    yield put({ type: "COMMENTS_FETCH_REQUESTED", relatedid });
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }

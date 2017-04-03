@@ -4,8 +4,8 @@ import { ContentState,EditorState,convertFromHTML } from 'draft-js';
 import  { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const optionsComment= ['inline', 'fontSize','fontFamily','colorPicker', 'link', 'emoji','image','history'];
-const optionsIssue= ['inline', 'fontSize','fontFamily','list', 'colorPicker', 'link', 'emoji','image','history'];
+const optionsComment= ['inline', 'fontSize','colorPicker', 'link', 'emoji','image','history'];
+const optionsIssue= ['inline', 'fontSize','list', 'colorPicker', 'link', 'emoji','image','history'];
 
 class MyEditor extends Component {
     

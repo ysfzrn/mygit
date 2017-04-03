@@ -51,6 +51,20 @@ export function createissue(app, title, text, status, postid, category) {
   //.catch((err)=>err);
 }
 
+export function updateissue(app, _id, status) {
+  const issues = app.service("issues");
+  return issues.patch(_id, { status: status });
+}
+
+export function removeissue(app, _id, postid) {
+  const issues = app.service("issues");
+  const postitems = app.service("postitems");
+
+  var query = { _id: postid };
+  postitems.remove(query);
+  return issues.remove(_id, {});
+}
+
 export function createtask(app, title, text, user_id, status) {
   const tasks = app.service("tasks");
   return tasks
@@ -92,6 +106,18 @@ export function getselectedissue(app, issue_id) {
     .then((data, err) => data.data);
 }
 
+export function fetchcomments(app, relatedid) {
+  const comments = app.service("comments");
+  return comments
+    .find({
+      query: {
+        relatedid: relatedid,
+        $sort: { updatedAt: 1 }
+      }
+    })
+    .then((data, err) => data);
+}
+
 export function getSumIssues(app) {
   const issues = app.service("issues");
 
@@ -110,7 +136,7 @@ export function getCountIssueItems(app, category, status) {
   return issues
     .find({
       query: {
-        category: category === null ? { $in: ['I', 'A'] } : category,
+        category: category === null ? { $in: ["I", "A"] } : category,
         status: category === "I" ? status : { $in: [true, false] }
       }
     })
@@ -130,4 +156,19 @@ export function gettasks(app) {
 export function updatetask(app, _id, status) {
   const tasks = app.service("tasks");
   return tasks.patch(_id, { status: status });
+}
+
+export function updatetaskwithform(app, _id, status, title, text, user_id) {
+  const tasks = app.service("tasks");
+  return tasks.patch(_id, {
+    status: status,
+    title: title,
+    text: text,
+    user_id
+  });
+}
+
+export function removetask(app, _id) {
+  const tasks = app.service("tasks");
+  return tasks.remove(_id);
 }

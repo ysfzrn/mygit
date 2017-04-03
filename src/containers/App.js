@@ -13,13 +13,12 @@ class App extends Component {
   componentWillMount() {
     const {  fetchTasks } = this.props;
     const issuesService = app.service("issues");
-    // debugger;
+    
     if (issuesService.connection.disconnected) {
       issuesService.on("created", item => this.handleAddingIssue(item));
+      issuesService.on("patched", item => this.handleFetchUpdate(item));
+      issuesService.on("removed", item => this.handleRemove(item));
     }
-    //issuesService.on('updated', (item) => fetchissues(0,issues.filter,issues.status,auth.token));
-    //issuesService.on('patched', (item) => fetchissues(0,issues.filter,issues.status,auth.token));
-    //issuesService.on('removed', (item) => fetchissues(0,issues.filter,issues.status,auth.token));
 
     const taskService = app.service("tasks");
     if (taskService.connection.disconnected) {
@@ -37,6 +36,18 @@ class App extends Component {
 
     //this.props.getsumissues();
   }
+
+  handleFetchUpdate=(item)=>{
+     const { updateissue,getcountissues } = this.props;
+     updateissue(item);
+     getcountissues();
+  }
+
+   handleRemove=(item)=>{
+      const { getcountissues,removeIssueSocket } = this.props;
+      getcountissues();
+      removeIssueSocket(item);
+   }
 
   handleFetch = () => {
     const { issues, fetchissues, auth } = this.props;
@@ -115,7 +126,7 @@ class App extends Component {
           />
 
           <TabCard
-            text="Kapalı"
+            text="Tamamlandı"
             count={issues.totalclose}
             status={issues.status}
             filter="close"

@@ -28,8 +28,30 @@ export function issueUpdateRequest(id, status ) {
   }
 }
 
+export function updateissue(item){
+   return{
+     type:'UPDATE_ISSUE_SOCKET',
+     item
+   }
+}
+
 export function addingIssue(){
   return {
     type:'ADDING_ISSUE'
+  }
+}
+
+export function removeIssue(id, postid){
+  return{
+    type:'REMOVE_ISSUE',
+    id,
+    postid
+  }
+}
+
+export function removeIssueSocket(item){
+  return{
+    type:'REMOVE_ISSUE_SOCKET',
+    item
   }
 }

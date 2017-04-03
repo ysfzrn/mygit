@@ -7,6 +7,9 @@ export const theme = {
     primary3Color: '#bdbdbd',   //solgun renk
     alternateTextColor:'#FFFFFF',  //karşıt renk
     textColor: '#263238',         //koyu renk
+    todo:'#F44336',
+    done:'#4CAF50',
+    announce:'#FFC107'
   },
   text:{
     tiny:'8px',

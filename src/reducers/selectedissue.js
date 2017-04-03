@@ -18,7 +18,41 @@ module.exports = (state = defaultState, action) => {
         loading:false,
         issue: action.issue[0]
       };
+    
+    case 'UPDATEISSUE_SUCCESS':
+             return {
+             	    ...state,
+             	    issue:reducer2(state.issue, action)
+             }
+
     default:
       return state;
   }
 };
+
+function reducer1(state, action) {
+    switch(action.type) {    	
+        case 'UPDATEISSUE_SUCCESS':
+      return state.map(t =>
+             reducer2(t, action)
+            );
+        default:
+           return state;
+    }
+}
+
+
+function reducer2(state, action) {
+    switch(action.type) {    	
+        case 'UPDATEISSUE_SUCCESS':
+	      if (state._id !== action.id) {
+	        return state;
+	      }
+	      return {
+	        ...state,
+	        status: action.status,
+	      };
+        default:
+           return state;
+    }
+}

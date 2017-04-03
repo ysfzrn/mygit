@@ -1,7 +1,8 @@
 var defaultState = {
   user_id: undefined,
   relatedid: undefined,
-  text: ""
+  text: "",
+  loading:false
 };
 
 module.exports = (state = defaultState, action) => {
@@ -11,10 +12,16 @@ module.exports = (state = defaultState, action) => {
         ...state,
         ...action.payload
       };
-    case "COMMENTSAVE_SUCCESS":
+    case "COMMENTSAVE_REQUESTED":
       return {
         ...state,
-        text: "<p>...</p>"
+        loading:true
+      }
+    case "COMMENTSAVE_DONE":
+      return {
+        ...state,
+        text: "",
+        loading:false
       };
     default:
       return state;

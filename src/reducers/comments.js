@@ -5,21 +5,16 @@ var defaultState = {
 
 module.exports = (state = defaultState, action) => {
   switch (action.type) {
-    case "COMMENTSAVE_REQUESTED":
+    case "COMMENTS_FETCH_REQUESTED":
       return {
         ...state,
         loadingComment: true
       };
-    case "COMMENTSAVE_DONE":
-      return {
-        ...state,
-        comments: action.comments
-      };
-    case "COMMENTS_FETCH_DONE":
+    case "COMMENTS_FETCH_SUCCESS":
       return {
         ...state,
         loadingComment: false,
-        comments: [...action.comments]
+        comments: [...action.comments.data]
       };
     case "COMMENTS_RESET":
       return {

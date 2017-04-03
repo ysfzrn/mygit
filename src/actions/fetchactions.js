@@ -61,3 +61,10 @@ export const getsumissues = () => ({
 export const getcountissues = () => ({
   type: "GET_COUNT_ISSUE_ITEMS"
 });
+
+
+export function commentsReset(){
+  return {
+    type:'COMMENTS_RESET'
+  }
+}

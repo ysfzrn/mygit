@@ -1,4 +1,6 @@
-var defaultState = {}
+var defaultState = {
+	user:[]
+}
 
 module.exports = (state=defaultState, action)=>{
 	switch(action.type){

@@ -30,10 +30,10 @@ class Task extends Component {
           cursor: "move"
         }}
       >
-        <Container>
+        <Container onClick={()=>this.props.onClick(taskitem)}>
           <Title> {taskitem.title} </Title>
           <Content>
-            <Circle onClick={this.handleOpen}>
+            <Circle>
               {taskitem.user
                 ? <Img src={`${API_URL}${taskitem.user.image}`} />
                 : <div> ? </div>}

@@ -11,16 +11,52 @@ import {
   Title,
   Container,
   Content,
-  Image,
-  Circle
+  IssueProfileImage,
+  CommentCard,
+  StatusOpen,
+  StatusClose,
+  StatusAnnounce,
+  IssueDeleteButton,
+  MyModalAlert
 } from "../components";
 import { stateToHTML } from "draft-js-export-html";
+import { app } from "../store";
 
 let gid = "";
+let issue_id = 0;
 class IssueView extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showModal: false
+    };
+  }
   componentWillMount() {
     const { fetchselectedissue, match } = this.props;
+    const commentService = app.service("comments");
+
     fetchselectedissue(match.params.id);
+    if (commentService.connection.disconnected) {
+      commentService.on("created", item => this.handleFetchComment(item));
+      commentService.on("patched", item => this.handleFetchComment(item));
+      commentService.on("updated", item => this.handleFetchComment(item));
+    }
+  }
+
+  handleFetchComment = item => {
+    const { fetchComments, match, selectedissue } = this.props;
+    fetchComments(issue_id);
+  };
+
+  componentDidMount() {
+    const { fetchComments, match } = this.props;
+    issue_id = match.params.id;
+    fetchComments(issue_id);
+  }
+
+  componentWillUnmount() {
+    const { commentsReset } = this.props;
+    commentsReset();
   }
 
   createMarkup = () => {
@@ -64,9 +100,38 @@ class IssueView extends Component {
     commentSave(auth.data._id, selectedissue.issue._id, commentform.text);
   };
 
+  handleStatus = (id, status) => {
+    const { issueUpdateRequest } = this.props;
+    issueUpdateRequest(id, !status);
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  handleOpenModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  handleRemoveIssue = () => {
+    const { removeIssue, selectedissue } = this.props;
+    removeIssue(selectedissue.issue._id, selectedissue.issue.postitem._id);
+  };
+
   render() {
-    const { issueform, selectedissue, commentform } = this.props;
-    const now = moment.utc(selectedissue.issue.updatedAt).fromNow();
+    const {
+      issueform,
+      selectedissue,
+      commentform,
+      comments,
+      auth
+    } = this.props;
+    
+    let now = undefined;
+    if (!selectedissue.loading) {
+      now = moment.utc(selectedissue.issue.updatedAt).fromNow();
+    }
+
     gid = issueform.addedfile;
 
     return (
@@ -77,16 +142,7 @@ class IssueView extends Component {
 
               <ContentContainer>
                 <Header>
-                  <Circle size={60}>
-                    {selectedissue.issue.postitem.user.image
-                      ? <Image src={selectedissue.issue.postitem.user.image} borderRadius={30} />
-                      : <div>
-                          {selectedissue.issue.postitem.user.name
-                            .substr(0, 1)
-                            .toUpperCase()}
-                          {" "}
-                        </div>}
-                  </Circle>
+                  <IssueProfileImage user={selectedissue.issue.postitem.user} />
                   <Owner>
                     <Name>
                       {selectedissue.issue.postitem.user.name}
@@ -94,36 +150,70 @@ class IssueView extends Component {
                       {selectedissue.issue.postitem.user.surname}
                     </Name>
                     <Now> {now} </Now>
-                    <Status
-                      status={selectedissue.issue.status}
-                      category={selectedissue.issue.category}
-                    >
-                      {selectedissue.issue.category === "I"
-                        ? selectedissue.issue.status ? "Açık" : "Tamamlandı"
-                        : "Duyuru"}
-                    </Status>
-
                   </Owner>
+                  <StatusContainer>
+                    {selectedissue.issue.category === "I" &&
+                      selectedissue.issue.status
+                      ? <StatusOpen
+                          onClick={() =>
+                            this.handleStatus(
+                              selectedissue.issue._id,
+                              selectedissue.issue.status
+                            )}
+                        />
+                      : selectedissue.issue.category === "I" &&
+                          !selectedissue.issue.status
+                          ? <StatusClose
+                              onClick={() =>
+                                this.handleStatus(
+                                  selectedissue.issue._id,
+                                  selectedissue.issue.status
+                                )}
+                            />
+                          : null}
+                    {selectedissue.issue.category === "A"
+                      ? <StatusAnnounce />
+                      : null}
+                    {selectedissue.issue.postitem.user._id === auth.data._id
+                      ? <IssueDeleteButton onClick={this.handleOpenModal} />
+                      : null}
+                  </StatusContainer>
                 </Header>
                 <Title>{selectedissue.issue.title}</Title>
-                <Content className="content" createMarkup={this.createMarkup()} />
+                <Content createMarkup={this.createMarkup()} />
               </ContentContainer>
 
               <CommentContainer>
+                {comments.comments.length !== 0
+                  ? comments.comments.map((item, i) => {
+                      return <CommentCard key={i} comment={item} />;
+                    })
+                  : null}
+
                 <Comments>
                   <EditorContainer>
-                    <MyEditor
-                      text={commentform.text}
-                      commentMode={true}
-                      onEditorStateChange={e =>
-                        this.handleEditorInput(e, "text")}
-                      placeholder="Buraya yorum yazabilirsin"
-                      imageUploadCb={this.uploadCallback}
-                    />
+                    {!commentform.loading
+                      ? <MyEditor
+                          text={commentform.text}
+                          commentMode={true}
+                          onEditorStateChange={e =>
+                            this.handleEditorInput(e, "text")}
+                          placeholder="Buraya yorum yazabilirsin"
+                          imageUploadCb={this.uploadCallback}
+                        />
+                      : <div style={{ minWidth: "200px" }}>
+                          Gönderiliyor...
+                        </div>}
                     <Button onClick={this.handleSave}>Gönder</Button>
                   </EditorContainer>
                 </Comments>
               </CommentContainer>
+              <MyModalAlert
+                isOpen={this.state.showModal}
+                onRequestYes={this.handleRemoveIssue}
+                onRequestClose={this.handleCloseModal}
+                onCloseModal={this.handleCloseModal}
+              />
 
             </div>}
 
@@ -164,7 +254,6 @@ const Header = styled.div`
     margin:0 auto;
 `;
 
-
 const Owner = styled.div`
     display:flex;
     flex-direction:column;
@@ -173,14 +262,8 @@ const Owner = styled.div`
     flex:1;
 `;
 
-const Status = styled.div`
-    position:absolute;
-    top:0;
-    right:0;
-    padding:10px 30px;
-    background-color: ${p => p.category === "I" ? p.status ? "#F44336" : "#4CAF50" : "#ffa726"}
-    color:${p => p.theme.palette.alternateTextColor};
-    border-radius:4px;
+const StatusContainer = styled.div`
+  
 `;
 
 const Name = styled.div`
@@ -200,7 +283,8 @@ var mapStateToProps = state => {
     selectedissue: state.selectedissue,
     issueform: state.issueform,
     auth: state.auth,
-    commentform: state.commentform
+    commentform: state.commentform,
+    comments: state.comments
   };
 };
 

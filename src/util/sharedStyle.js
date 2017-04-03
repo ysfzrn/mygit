@@ -31,5 +31,34 @@ export function fadeIn(){
 	return fadeIn;
 }
 
+export function slideInLeft(){
+	const slidelinLeft = keyframes`
+	  from {
+	    left: -178px;
+	  }
+
+	  to {
+	    left: 0;
+	  }
+	`;
+	
+	return slidelinLeft;
+}
+
+export function slideInRight(){
+	const slidelinRight = keyframes`
+	  from {
+	    right: -178px;
+	  }
+
+	  to {
+	    right: 0;
+	  }
+	`;
+	
+	return slidelinRight;
+}
+
+
 
 
