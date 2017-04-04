@@ -24,7 +24,10 @@ module.exports = (state = defaultState, action) => {
              	    ...state,
              	    issue:reducer2(state.issue, action)
              }
-
+    case "RESET_SELECTED_ISSUE":
+       return{
+          ...defaultState
+       }
     default:
       return state;
   }

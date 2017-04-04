@@ -10,6 +10,7 @@ import { AppBar } from "../components";
 import styled from "styled-components";
 import ProjectPlan from "./ProjectPlan";
 import IssueView from "./IssueView";
+import NotificationPage from "./NotificationPage";
 import { app } from "../store";
 import {HOST_URL} from '../util/api'
 
@@ -21,9 +22,17 @@ class Template extends Component {
       issuesService.on("created", item => this.handleAddingIssue(item));
       issuesService.on("patched", item => this.handleIssueNotification(item));
     }*/
+    const {fetchActivities,auth}=this.props;
+    const activityService = app.service("activities");
+    if (activityService.connection.disconnected) {
+      activityService.on("created", item =>this.socketActivitiesControl(item) );
+      activityService.on("removed", item =>this.socketActivitiesControl(item) );
+    }
   }
 
   componentDidMount() {
+    const {fetchActivities,auth}=this.props;
+    fetchActivities(auth.data._id)
     /*if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
@@ -32,6 +41,12 @@ class Template extends Component {
         " :( Masaüstü bildirimler bu browserda etkin değil. Lütfen Chrome kullanın!"
       );
     }*/
+  }
+
+  socketActivitiesControl=(item)=>{
+    const {fetchActivities,auth,selectedissue,removeActivity}=this.props;
+     fetchActivities(auth.data._id)
+     //TODO: Kullanıcının ekranı açıkken gelen notification'ı sil
   }
 
   handleIssueNotification = (item) => {
@@ -52,12 +67,17 @@ class Template extends Component {
     toPush(to);
   };
 
+  handleToNotification=()=>{
+    const { toPush } = this.props;
+    toPush('/app/notificationpage');
+  }
+
   handleLogOut = () => {
     const { logout } = this.props;
     logout();
   };
   render() {
-    const { auth } = this.props;
+    const { auth,activities } = this.props;
     return (
       <Container className="col col-xs-12" style={{ padding: 0 }}>
         <AppBarContainer>
@@ -65,6 +85,9 @@ class Template extends Component {
             auth={auth}
             handleToPush={this.handleToPush}
             handleLogOut={this.handleLogOut}
+            handleToNotification={this.handleToNotification}
+            notify={activities.total > 0 ? true :false } 
+            totalNot={activities.total}
           />
         </AppBarContainer>
         <MainContainer className="col col-xs-12" style={{ padding: "48px 0" }}>
@@ -74,6 +97,7 @@ class Template extends Component {
           <Route path="/app/profile" component={Profile} />
           <Route path="/app/projectplan" component={ProjectPlan} />
           <Route path="/app/issueview/:id" component={IssueView} />
+          <Route path="/app/notificationpage" component={NotificationPage} />
         </MainContainer>
       </Container>
     );
@@ -102,7 +126,9 @@ const MainContainer = styled.div`
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    activities:state.activities,
+    selectedissue:state.selectedissue
   };
 };
 

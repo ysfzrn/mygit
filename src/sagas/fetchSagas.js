@@ -6,7 +6,8 @@ import {
   gettasks,
   getselectedissue,
   getCountIssueItems,
-  fetchcomments
+  fetchcomments,
+  fetchactivities
 } from "./services";
 import { addAlert } from "../actions";
 
@@ -195,5 +196,18 @@ export function* fetchCommentsSaga( feathersApp ){
 function* callfetchcomments( feathersApp, action ){
    const comments = yield call(fetchcomments, feathersApp, action.relatedid);
    yield put({type:"COMMENTS_FETCH_SUCCESS", comments});
+}
+
+/**
+ * 
+ * fetchactivities feathersApp 
+ */
+export function* fetchActivitiesSaga( feathersApp ){
+  yield takeEvery("ACTIVITY_FETCH_REQUESTED", callfetchactivities, feathersApp );
+}
+
+function* callfetchactivities( feathersApp, action ){
+   const activities = yield call(fetchactivities, feathersApp, action.user_id);
+   yield put({type:"ACTIVITY_FETCH_DONE", activities});
 }
 

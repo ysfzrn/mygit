@@ -172,3 +172,45 @@ export function removetask(app, _id) {
   const tasks = app.service("tasks");
   return tasks.remove(_id);
 }
+
+export function addactivity(
+  app,
+  relatedpost_id,
+  user_id,
+  owner_id,
+  posttype,
+  body,
+  route,
+  readed
+) {
+  const activities = app.service("activities");
+  return activities
+    .create({
+      relatedpost_id,
+      user_id,
+      owner_id,
+      posttype,
+      body,
+      route,
+      readed
+    })
+    .then((data, err) => data);
+}
+
+
+export function fetchactivities(app, user_id) {
+  const activities = app.service("activities");
+  return activities
+    .find({
+      query: {
+        owner_id: user_id,
+        $sort: { updatedAt: -1 }
+      }
+    })
+    .then((data, err) => data);
+}
+
+export function removeactivity(app, _id) {
+  const activities = app.service("activities");
+  return activities.remove(_id);
+}

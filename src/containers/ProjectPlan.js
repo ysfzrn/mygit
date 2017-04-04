@@ -40,12 +40,11 @@ class ProjectPlan extends Component {
     const taskService = app.service("tasks");
     // debugger;
     fetchUsers();
-    
-      taskService.on("created", item => fetchTasks());
-      taskService.on("patched", item => fetchTasks());
-      taskService.on("updated", item => fetchTasks());
-      taskService.on("removed", item => fetchTasks());
-    
+
+    taskService.on("created", item => fetchTasks());
+    taskService.on("patched", item => fetchTasks());
+    taskService.on("updated", item => fetchTasks());
+    taskService.on("removed", item => fetchTasks());
   }
 
   componentDidMount() {
@@ -62,7 +61,13 @@ class ProjectPlan extends Component {
   };
 
   taskSaveHandle = e => {
-    const { taskform, taskSave, taskUpdateWithForm } = this.props;
+    const {
+      taskform,
+      taskSave,
+      taskUpdateWithForm,
+      activitySave,
+      auth
+    } = this.props;
     e.preventDefault();
     if (taskform.process === "I") {
       taskSave(
@@ -80,15 +85,29 @@ class ProjectPlan extends Component {
         taskform.user_id
       );
     }
+
+    const user = `${auth.data.name} ${auth.data.surname}`;
+    if (auth.data._id !== taskform.user_id) {
+      activitySave(
+        taskform.id ? taskform.id : null,
+        auth.data._id,
+        taskform.user_id,
+        "T",
+        `${user} tarafından ${taskform.title} başlıklı task size atandı`,
+        "/app/projectplan",
+        false
+      );
+    }
+
     this.handleCloseModal();
   };
 
-  taskRemoveHandle=e=>{
-      const { taskform, taskRemove } = this.props;
-       e.preventDefault();
-       taskRemove(taskform.id)
-       this.handleCloseModal();
-  }
+  taskRemoveHandle = e => {
+    const { taskform, taskRemove } = this.props;
+    e.preventDefault();
+    taskRemove(taskform.id);
+    this.handleCloseModal();
+  };
 
   handleOpenModal = () => {
     this.setState({ showModal: true });
@@ -106,12 +125,12 @@ class ProjectPlan extends Component {
   onBeginningDrag = id => {
     this.setState({ selectedItem: id });
   };
-  
-  handleTaskAddClick=()=>{
-     this.handleInput("I", "process");
-     this.handleInput(0, "status");
-     this.handleOpenModal();
-  }
+
+  handleTaskAddClick = () => {
+    this.handleInput("I", "process");
+    this.handleInput(0, "status");
+    this.handleOpenModal();
+  };
 
   handleTaskClick = task => {
     const { taskFormChange } = this.props;
@@ -183,12 +202,18 @@ class ProjectPlan extends Component {
               onSelected={item => this.handleInput(item.value, "user_id")}
             />
 
-            <Button type="submit" style={{ width: "100%",marginBottom:'10px' }}>
+            <Button
+              type="submit"
+              style={{ width: "100%", marginBottom: "10px" }}
+            >
               {taskform.process === "I" ? "EKLE" : "GÜNCELLE"}
             </Button>
             {taskform.process === "U"
-              ? <Button onClick={this.taskRemoveHandle} style={{ width: "100%"}}>
-                   Sil
+              ? <Button
+                  onClick={this.taskRemoveHandle}
+                  style={{ width: "100%" }}
+                >
+                  Sil
                 </Button>
               : null}
           </Form>
@@ -227,7 +252,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     taskform: state.taskform,
     tasks: state.tasks,
-    optionsusers: makingSelectedUsers(state)
+    optionsusers: makingSelectedUsers(state),
+    auth: state.auth
   };
 };
 

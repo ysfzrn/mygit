@@ -55,3 +55,11 @@ export function removeIssueSocket(item){
     item
   }
 }
+
+
+
+export function selectedIssueReset(){
+  return{
+    type:'RESET_SELECTED_ISSUE'
+  }
+}

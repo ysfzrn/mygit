@@ -31,6 +31,8 @@ import StatusOpen from "./StatusOpen";
 import StatusClose from "./StatusClose";
 import StatusAnnounce from "./StatusAnnounce";
 import IssueDeleteButton from './IssueDeleteButton'
+import NotificationButton from './NotificationButton'
+import NotificationItem from './NotificationItem'
 
 export {
   TextInput,
@@ -65,5 +67,7 @@ export {
   StatusOpen,
   StatusClose,
   StatusAnnounce,
-  IssueDeleteButton
+  IssueDeleteButton,
+  NotificationButton,
+  NotificationItem
 };

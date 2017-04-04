@@ -9,7 +9,9 @@ import {
   createcomment,
   removetask,
   updateissue,
-  removeissue
+  removeissue,
+  addactivity,
+  removeactivity
 } from "./services";
 import { push } from "react-router-redux";
 import store from "../store";
@@ -225,6 +227,45 @@ function* addcomment(feathersApp, action) {
 
     yield put({ type: "COMMENTSAVE_DONE", relatedid });
     yield put({ type: "COMMENTS_FETCH_REQUESTED", relatedid });
+  } catch (error) {
+    yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
+  }
+}
+
+/**
+ * activitySave
+ */
+
+export function* addActivitySaga(feathersApp) {
+  yield takeEvery("ACTIVITY_SAVE_REQUEST", calladdactivity, feathersApp);
+}
+
+function* calladdactivity(feathersApp, action) {
+  yield call(
+    addactivity,
+    feathersApp,
+    action.relatedpost_id,
+    action.user_id,
+    action.owner_id,
+    action.posttype,
+    action.body,
+    action.route,
+    action.readed
+  );
+}
+/**
+ * activityRemove
+ */
+
+export function* removeActivitySaga(feathersApp) {
+  yield takeEvery("REMOVE_ACTIVITY_REQUEST", callremoveactivity, feathersApp);
+}
+
+function* callremoveactivity(feathersApp, action) {
+  try {
+    yield call(removeactivity, feathersApp, action.id);
+    const id = action.id;
+    yield put({ type: "TASK_REMOVE_SUCCESS", id });
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }

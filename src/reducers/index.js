@@ -11,6 +11,7 @@ import tasks from "./tasks";
 import selectedissue from "./selectedissue";
 import commentform from "./commentform";
 import comments from "./comments";
+import activities from "./activities";
 
 const reducer = combineReducers({
   routing: routerReducer,
@@ -24,8 +25,21 @@ const reducer = combineReducers({
   tasks: tasks,
   selectedissue: selectedissue,
   commentform: commentform,
-  comments: comments
+  comments: comments,
+  activities:activities
 });
+
+export const commentPersons=state=>{
+  const comments = state.comments.comments;
+  let persons=[];
+  for (let i = 0; i < comments.length; i++) {
+     if( !persons.includes(comments[i].user_id)){
+         persons.push(comments[i].user_id)
+     }
+     //persons=[...persons, comments[i].user_id];
+  }
+  return persons;
+}
 
 
 export const percentDoneTask = state => {

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PlusButton from "./PlusButton";
 import ProfileImage from "./AppProfileImage";
 import { Link } from "react-router-dom";
+import NotificationButton from './NotificationButton'
 
 const AppBar = props => {
   return (
@@ -15,6 +16,7 @@ const AppBar = props => {
       </Link>
 
       <ActionContainer>
+       <NotificationButton totalNot={props.totalNot} notify={props.notify}  handleToNotification={props.handleToNotification} />
         <PlusButton handleToPush={to => props.handleToPush(to)} />
         <ProfileImage
           auth={props.auth}

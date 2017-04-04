@@ -11,6 +11,10 @@ import media from "../util/media";
 
 class App extends Component {
   componentWillMount() {
+    this.connectSocket();
+  }
+
+  connectSocket=()=>{
     const {  fetchTasks } = this.props;
     const issuesService = app.service("issues");
     
@@ -29,10 +33,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { fetchTasks,getcountissues } = this.props;
+    const { fetchTasks,getcountissues, fetchActivities } = this.props;
     fetchTasks();
     getcountissues();
     this.handleFetch();
+    this.connectSocket();
 
     //this.props.getsumissues();
   }
@@ -54,23 +59,27 @@ class App extends Component {
     if (issues.issues.length === 0) {
       fetchissues(issues.offset, issues.filter, issues.status, auth.token);
     }
+    this.connectSocket();
   };
 
   handleAddingIssue = item => {
     const { addingIssue,getcountissues } = this.props;
     addingIssue();
     getcountissues();
+    this.connectSocket();
   };
 
   handleFetchSocket = () => {
     const { issues, fetchissuessocket, auth } = this.props;
     fetchissuessocket(0, issues.filter, "all", auth.token);
+    this.connectSocket();
   };
 
   handleFetchMore = e => {
     e.preventDefault();
     const { issues, fetchissuesmore, auth } = this.props;
     fetchissuesmore(issues.offset, issues.filter, issues.status, auth.token);
+    this.connectSocket();
   };
 
   handleInput = (text, field) => {

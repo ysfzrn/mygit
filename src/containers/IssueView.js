@@ -21,6 +21,7 @@ import {
 } from "../components";
 import { stateToHTML } from "draft-js-export-html";
 import { app } from "../store";
+import { commentPersons } from "../reducers";
 
 let gid = "";
 let issue_id = 0;
@@ -32,6 +33,10 @@ class IssueView extends Component {
     };
   }
   componentWillMount() {
+    this.connectSocket()
+  }
+
+  connectSocket=()=>{
     const { fetchselectedissue, match } = this.props;
     const commentService = app.service("comments");
 
@@ -42,6 +47,7 @@ class IssueView extends Component {
       commentService.on("updated", item => this.handleFetchComment(item));
     }
   }
+  
 
   handleFetchComment = item => {
     const { fetchComments, match, selectedissue } = this.props;
@@ -55,8 +61,9 @@ class IssueView extends Component {
   }
 
   componentWillUnmount() {
-    const { commentsReset } = this.props;
+    const { commentsReset,selectedIssueReset } = this.props;
     commentsReset();
+    selectedIssueReset();
   }
 
   createMarkup = () => {
@@ -96,13 +103,89 @@ class IssueView extends Component {
   };
 
   handleSave = () => {
-    const { commentform, commentSave, auth, selectedissue } = this.props;
+    const {
+      commentform,
+      commentSave,
+      auth,
+      selectedissue,
+      activitySave,
+      comments,
+      commentpersons
+    } = this.props;
+    const user = `${auth.data.name} ${auth.data.surname}`;
+
     commentSave(auth.data._id, selectedissue.issue._id, commentform.text);
+
+    if (selectedissue.issue.postitem.user_id !== auth.data._id) {
+      activitySave(
+        selectedissue.issue._id,
+        auth.data._id,
+        selectedissue.issue.postitem.user_id,
+        "C",
+        `${user} tarafından ${selectedissue.issue._id} nolu post'a yorum yapıldı`,
+        `/app/issueview/${selectedissue.issue._id}`,
+        false
+      );
+    }
+
+    if (commentpersons.length > 0) {
+      for (let i = 0; i < commentpersons.length; i++) {
+        if (
+          selectedissue.issue.postitem.user_id !== commentpersons[i] && //don't notify issue's owner
+          auth.data._id !== commentpersons[i] //don't notify comment's owner
+        ) {
+          activitySave(
+            selectedissue.issue._id,
+            auth.data._id,
+            commentpersons[i],
+            "C",
+            `${user} tarafından ${selectedissue.issue._id} nolu post'a yorum yapıldı`,
+            `/app/issueview/${selectedissue.issue._id}`,
+            false
+          );
+        }
+      }
+    }
   };
 
   handleStatus = (id, status) => {
-    const { issueUpdateRequest } = this.props;
+    const { issueUpdateRequest,commentpersons,selectedissue,auth,activitySave } = this.props;
     issueUpdateRequest(id, !status);
+
+    const user = `${auth.data.name} ${auth.data.surname}`;
+    const stext = status ? 'kapatıldı' : 'tekrar açıldı';
+
+    if (selectedissue.issue.postitem.user_id !== auth.data._id) {
+      activitySave(
+        selectedissue.issue._id,
+        auth.data._id,
+        selectedissue.issue.postitem.user_id,
+        "I",
+        `${user} tarafından ${selectedissue.issue._id} nolu issue ${stext}`,
+        `/app/issueview/${selectedissue.issue._id}`,
+        false
+      );
+    }
+
+    if (commentpersons.length > 0) {
+      for (let i = 0; i < commentpersons.length; i++) {
+        if (
+          selectedissue.issue.postitem.user_id !== commentpersons[i] && //don't notify issue's owner
+          auth.data._id !== commentpersons[i] //don't notify activity's owner
+        ) {
+          activitySave(
+            selectedissue.issue._id,
+            auth.data._id,
+            commentpersons[i],
+            "I",
+            `${user} tarafından  ${selectedissue.issue._id} nolu issue ${stext}`,
+            `/app/issueview/${selectedissue.issue._id}`,
+            false
+          );
+        }
+      }
+    }
+
   };
 
   handleCloseModal = () => {
@@ -126,7 +209,7 @@ class IssueView extends Component {
       comments,
       auth
     } = this.props;
-    
+
     let now = undefined;
     if (!selectedissue.loading) {
       now = moment.utc(selectedissue.issue.updatedAt).fromNow();
@@ -284,7 +367,9 @@ var mapStateToProps = state => {
     issueform: state.issueform,
     auth: state.auth,
     commentform: state.commentform,
-    comments: state.comments
+    comments: state.comments,
+    commentpersons: commentPersons(state),
+    activities:state.activities
   };
 };
 

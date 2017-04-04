@@ -11,7 +11,8 @@ import {
   fetchIssuesMoreSaga,
   fetchSelectedIssueSaga,
   getCountIssueItemsSaga,
-  fetchCommentsSaga
+  fetchCommentsSaga,
+  fetchActivitiesSaga
 } from "./fetchSagas";
 import {
   addIssueSaga,
@@ -23,7 +24,9 @@ import {
   updateTaskWithFormSaga,
   removeTaskSaga,
   updateIssueSaga,
-  removeIssueSaga
+  removeIssueSaga,
+  addActivitySaga,
+  removeActivitySaga
 } from "./addSagas";
 import {
   signupSaga,
@@ -76,9 +79,11 @@ export default function* root(feathersApp) {
     fork(removeTaskSaga, feathersApp),
     fork(fetchCommentsSaga, feathersApp),
     fork(updateIssueSaga, feathersApp),
-    fork(removeIssueSaga,feathersApp)
+    fork(removeIssueSaga,feathersApp),
+    fork(addActivitySaga,feathersApp),
+    fork(fetchActivitiesSaga,feathersApp),
+    fork(removeActivitySaga,feathersApp)
     
-
-
+    
   ];
 }

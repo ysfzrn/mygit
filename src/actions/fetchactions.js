@@ -46,6 +46,11 @@ export const fetchComments = relatedid => ({
   relatedid
 });
 
+export const fetchActivities = user_id => ({
+  type: "ACTIVITY_FETCH_REQUESTED",
+  user_id
+});
+
 export const fetchUsers = () => ({
   type: "USERS_FETCH_REQUESTED"
 });
