@@ -47,8 +47,8 @@ class Task extends Component {
 }
 
 const Container = styled.div`
-    width:200px;
-    height:130px;
+    width:245px;
+    height:150px;
     display:flex;
     align-items:center;
     flex-direction:column;

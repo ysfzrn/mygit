@@ -11,7 +11,7 @@ const AppBar = props => {
 
       <Link to="/app" style={{ textDecoration: "none" }}>
         <Title>
-          TEST PROJE
+          ALTIN PROJESİ
         </Title>
       </Link>
 

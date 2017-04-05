@@ -65,7 +65,7 @@ TaskStage.propTypes = {
 
 const Stage = styled.div`
     min-width:250px;
-    height:85vh;
+    height:100%;
     background-color:${p => p.backgroundColor} ;
     display:flex;
     flex-direction:column;
@@ -73,6 +73,7 @@ const Stage = styled.div`
     color:#FFFFFF;
     margin:auto 2px;
     overflow-y:auto;
+    overflow-x:hidden;
 `;
 
 export default DropTarget(ItemTypes.TASK, squareTarget, collect)(TaskStage);

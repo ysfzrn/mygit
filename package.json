@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.15.3",
+    "babel-polyfill": "^6.23.0",
     "d3": "^3.5.16",
     "draft-js": "^0.10.0",
     "draft-js-export-html": "^0.5.2",

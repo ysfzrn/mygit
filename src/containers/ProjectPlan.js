@@ -87,7 +87,7 @@ class ProjectPlan extends Component {
     }
 
     const user = `${auth.data.name} ${auth.data.surname}`;
-    if (auth.data._id !== taskform.user_id) {
+    if (auth.data._id !== taskform.user_id && taskform.user_id) {
       activitySave(
         taskform.id ? taskform.id : null,
         auth.data._id,
