@@ -12,6 +12,7 @@ import {
 } from "./services";
 import { addAlert } from "../actions";
 import {HOST_URL ,API_URL} from '../util/api'
+import store from "../store";
 
 let not_id = 0;
 
@@ -227,7 +228,13 @@ export function* NotificationsSaga( feathersApp ){
 }
 
 function* notifyactivities( feathersApp, action ){
-   if(not_id !== action.activities.data[0]._id && not_id !==0){
+   
+   if(store.getState().routing.location.pathname === action.activities.data[0].route){
+        const id = action.activities.data[0]._id;
+        put({type:"REMOVE_ACTIVITY_REQUEST", id });
+        not_id = 0;
+   }
+   else if(not_id !== action.activities.data[0]._id && not_id !==0 && store.getState().routing.location.pathname !== action.activities.data[0].route ){
         var notification = new Notification('Issue', {
           icon: `${API_URL}${action.activities.data[0].user.image}`,
           body: action.activities.data[0].body,
