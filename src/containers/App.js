@@ -72,7 +72,6 @@ class App extends Component {
     e.preventDefault();
     const { issues, fetchissuesmore, auth } = this.props;
     fetchissuesmore(issues.offset, issues.filter, issues.status, auth.token);
-    this.connectSocket();
   };
 
   handleInput = (text, field) => {

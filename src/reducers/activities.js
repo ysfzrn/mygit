@@ -30,7 +30,7 @@ module.exports = (state = defaultState, action) => {
         items: [...action.activities.data],
         total: action.activities.total
       };
-    case "TASK_REMOVE_SUCCESS":
+    case "ACTIVITY_REMOVE_SUCCESS":
       return {
         ...state,
         items: reducer1(state.items, action),
@@ -43,7 +43,7 @@ module.exports = (state = defaultState, action) => {
 
 function reducer1(state, action) {
   switch (action.type) {
-    case "TASK_REMOVE_SUCCESS":
+    case "ACTIVITY_REMOVE_SUCCESS":
       return state.filter(item => {
         if (item._id === action.id) {
           return false;

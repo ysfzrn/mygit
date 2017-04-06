@@ -16,11 +16,15 @@ import {HOST_URL} from '../util/api'
 
 class Template extends Component {
   componentWillMount() {
-    /*const issuesService = app.service("issues");
-    if (issuesService.connection.disconnected) {
-      issuesService.on("created", item => this.handleAddingIssue(item));
-      issuesService.on("patched", item => this.handleIssueNotification(item));
-    }*/
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+    if (!Notification) {
+      alert(
+        " :( Masaüstü bildirimler bu browserda etkin değil. Lütfen Chrome kullanın!"
+      );
+    }
+    
     const {fetchActivities,auth}=this.props;
     const activityService = app.service("activities");
     if (activityService.connection.disconnected) {
@@ -32,14 +36,6 @@ class Template extends Component {
   componentDidMount() {
     const {fetchActivities,auth}=this.props;
     fetchActivities(auth.data._id)
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-    if (!Notification) {
-      alert(
-        " :( Masaüstü bildirimler bu browserda etkin değil. Lütfen Chrome kullanın!"
-      );
-    }
   }
 
   socketActivitiesControl=(item)=>{

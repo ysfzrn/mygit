@@ -265,7 +265,7 @@ function* callremoveactivity(feathersApp, action) {
   try {
     yield call(removeactivity, feathersApp, action.id);
     const id = action.id;
-    yield put({ type: "TASK_REMOVE_SUCCESS", id });
+    yield put({ type: "ACTIVITY_REMOVE_SUCCESS", id });
   } catch (error) {
     yield put(addAlert("Bir şeyler ters gitti :( ", "danger"));
   }
