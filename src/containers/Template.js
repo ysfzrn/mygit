@@ -14,7 +14,6 @@ import NotificationPage from "./NotificationPage";
 import { app } from "../store";
 import {HOST_URL} from '../util/api'
 
-const Announce = () => <h1>Announce</h1>;
 class Template extends Component {
   componentWillMount() {
     /*const issuesService = app.service("issues");
@@ -26,29 +25,28 @@ class Template extends Component {
     const activityService = app.service("activities");
     if (activityService.connection.disconnected) {
       activityService.on("created", item =>this.socketActivitiesControl(item) );
-      activityService.on("removed", item =>this.socketActivitiesControl(item) );
+      activityService.on("removed", item =>fetchActivities(auth.data._id) );
     }
   }
 
   componentDidMount() {
     const {fetchActivities,auth}=this.props;
     fetchActivities(auth.data._id)
-    /*if (Notification.permission !== "granted") {
+    if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
     if (!Notification) {
       alert(
         " :( Masaüstü bildirimler bu browserda etkin değil. Lütfen Chrome kullanın!"
       );
-    }*/
+    }
   }
 
   socketActivitiesControl=(item)=>{
-    const {fetchActivities,auth,selectedissue,removeActivity}=this.props;
-     fetchActivities(auth.data._id)
+     const {fetchActivitiesSocket,auth,selectedissue,removeActivity}=this.props;
+     fetchActivitiesSocket(auth.data._id)
      //TODO: Kullanıcının ekranı açıkken gelen notification'ı sil
   }
-
   handleIssueNotification = (item) => {
     const statutext = item.status ? "tekrar açıldı" : "kapatıldı"
     var notification = new Notification('Issue kapatıldı', {
@@ -93,7 +91,6 @@ class Template extends Component {
         <MainContainer className="col col-xs-12" style={{ padding: "48px 0" }}>
           <Route exact path="/app" component={App} />
           <Route path="/app/issue" component={Issue} />
-          <Route path="/app/announce" component={Announce} />
           <Route path="/app/profile" component={Profile} />
           <Route path="/app/projectplan" component={ProjectPlan} />
           <Route path="/app/issueview/:id" component={IssueView} />

@@ -18,6 +18,18 @@ module.exports = (state = defaultState, action) => {
         items: [...action.activities.data],
         total: action.activities.total
       };
+    case "ACTIVITY_FETCH_SOCKET_REQUESTED":
+      return {
+        ...state,
+        loadingactivities: true
+      };
+    case "ACTIVITY_FETCH_SOCKET_DONE":
+      return {
+        ...state,
+        loadingactivities: false,
+        items: [...action.activities.data],
+        total: action.activities.total
+      };
     case "TASK_REMOVE_SUCCESS":
       return {
         ...state,

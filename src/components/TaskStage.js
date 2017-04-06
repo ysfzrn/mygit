@@ -46,11 +46,11 @@ class TaskStage extends Component {
   };
 
   render() {
-    const { item, connectDropTarget } = this.props;
+    const { item, connectDropTarget,isOver } = this.props;
 
     return connectDropTarget(
       <div>
-        <Stage backgroundColor={item.backgroundColor}>
+        <Stage backgroundColor={isOver ? item.hoverColor : item.backgroundColor}>
           <h3> {item.title}</h3>
           {this.renderList(item.id)}
         </Stage>

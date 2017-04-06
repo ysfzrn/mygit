@@ -10,10 +10,6 @@ import { percentDoneTask } from "../reducers";
 import media from "../util/media";
 
 class App extends Component {
-  componentWillMount() {
-    this.connectSocket();
-  }
-
   connectSocket=()=>{
     const {  fetchTasks } = this.props;
     const issuesService = app.service("issues");
@@ -59,20 +55,17 @@ class App extends Component {
     if (issues.issues.length === 0) {
       fetchissues(issues.offset, issues.filter, issues.status, auth.token);
     }
-    this.connectSocket();
   };
 
   handleAddingIssue = item => {
     const { addingIssue,getcountissues } = this.props;
     addingIssue();
     getcountissues();
-    this.connectSocket();
   };
 
   handleFetchSocket = () => {
     const { issues, fetchissuessocket, auth } = this.props;
     fetchissuessocket(0, issues.filter, "all", auth.token);
-    this.connectSocket();
   };
 
   handleFetchMore = e => {

@@ -122,7 +122,7 @@ class IssueView extends Component {
         auth.data._id,
         selectedissue.issue.postitem.user_id,
         "C",
-        `${user} tarafından ${selectedissue.issue._id} nolu post'a yorum yapıldı`,
+        `${user} tarafından ${selectedissue.issue.title} başlıklı post'a yorum yapıldı`,
         `/app/issueview/${selectedissue.issue._id}`,
         false
       );
@@ -139,7 +139,7 @@ class IssueView extends Component {
             auth.data._id,
             commentpersons[i],
             "C",
-            `${user} tarafından ${selectedissue.issue._id} nolu post'a yorum yapıldı`,
+            `${user} tarafından ${selectedissue.issue.title} başlıklı post'a yorum yapıldı`,
             `/app/issueview/${selectedissue.issue._id}`,
             false
           );
@@ -161,7 +161,7 @@ class IssueView extends Component {
         auth.data._id,
         selectedissue.issue.postitem.user_id,
         "I",
-        `${user} tarafından ${selectedissue.issue._id} nolu issue ${stext}`,
+        `${user} tarafından ${selectedissue.issue.title} başlıklı issue ${stext}`,
         `/app/issueview/${selectedissue.issue._id}`,
         false
       );
@@ -178,7 +178,7 @@ class IssueView extends Component {
             auth.data._id,
             commentpersons[i],
             "I",
-            `${user} tarafından  ${selectedissue.issue._id} nolu issue ${stext}`,
+            `${user} tarafından  ${selectedissue.issue.title} başlıklı issue ${stext}`,
             `/app/issueview/${selectedissue.issue._id}`,
             false
           );

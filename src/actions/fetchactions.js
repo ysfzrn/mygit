@@ -51,6 +51,11 @@ export const fetchActivities = user_id => ({
   user_id
 });
 
+export const fetchActivitiesSocket = user_id => ({
+  type: "ACTIVITY_FETCH_SOCKET_REQUESTED",
+  user_id
+});
+
 export const fetchUsers = () => ({
   type: "USERS_FETCH_REQUESTED"
 });

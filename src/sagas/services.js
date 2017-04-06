@@ -210,6 +210,20 @@ export function fetchactivities(app, user_id) {
     .then((data, err) => data);
 }
 
+
+export function fetchactivitiessocket(app, user_id) {
+  const activities = app.service("activities");
+  return activities
+    .find({
+      query: {
+        owner_id: user_id,
+        $sort: { updatedAt: -1 },
+        $limit:1
+      }
+    })
+    .then((data, err) => data);
+}
+
 export function removeactivity(app, _id) {
   const activities = app.service("activities");
   return activities.remove(_id);

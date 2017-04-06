@@ -26,11 +26,11 @@ class ProjectPlan extends Component {
       showModal: false,
       selectedItem: null,
       containers: [
-        { id: 0, title: "TO-DO", backgroundColor: "#F44336" },
-        { id: 1, title: "Development", backgroundColor: "#FFC107" },
-        { id: 2, title: "SG-Test", backgroundColor: "#2196F3" },
-        { id: 3, title: "Kullanıcı Test", backgroundColor: "#009688" },
-        { id: 4, title: "Done", backgroundColor: "#4CAF50" }
+        { id: 0, title: "TO-DO", backgroundColor: "#F44336", hoverColor:"#b71c1c" },
+        { id: 1, title: "Development", backgroundColor: "#FFC107",hoverColor:"#ff8f00" },
+        { id: 2, title: "SG-Test", backgroundColor: "#2196F3",hoverColor:"#1565c0" },
+        { id: 3, title: "Kullanıcı Test", backgroundColor: "#009688",hoverColor:"#00695c" },
+        { id: 4, title: "Done", backgroundColor: "#4CAF50",hoverColor:"#2e7d32" }
       ]
     };
   }

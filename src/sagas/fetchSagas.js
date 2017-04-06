@@ -7,11 +7,13 @@ import {
   getselectedissue,
   getCountIssueItems,
   fetchcomments,
-  fetchactivities
+  fetchactivities,
+  fetchactivitiessocket
 } from "./services";
 import { addAlert } from "../actions";
+import {HOST_URL ,API_URL} from '../util/api'
 
-
+let not_id = 0;
 
 export function* fetchIssuesSaga(feathersApp) {
   yield takeEvery("ISSUE_FETCH_REQUESTED", callFetchIssues, feathersApp);
@@ -209,5 +211,37 @@ export function* fetchActivitiesSaga( feathersApp ){
 function* callfetchactivities( feathersApp, action ){
    const activities = yield call(fetchactivities, feathersApp, action.user_id);
    yield put({type:"ACTIVITY_FETCH_DONE", activities});
+}
+
+export function* fetchActivitiesSocketSaga( feathersApp ){
+  yield takeEvery("ACTIVITY_FETCH_SOCKET_REQUESTED", callfetchactivitiessocket, feathersApp );
+}
+
+function* callfetchactivitiessocket( feathersApp, action ){
+   const activities = yield call(fetchactivitiessocket, feathersApp, action.user_id);
+   yield put({type:"ACTIVITY_FETCH_SOCKET_DONE", activities});
+}
+
+export function* NotificationsSaga( feathersApp ){
+  yield takeEvery("ACTIVITY_FETCH_SOCKET_DONE", notifyactivities, feathersApp );
+}
+
+function* notifyactivities( feathersApp, action ){
+   if(not_id !== action.activities.data[0]._id && not_id !==0){
+        var notification = new Notification('Issue', {
+          icon: `${API_URL}${action.activities.data[0].user.image}`,
+          body: action.activities.data[0].body,
+          tag:"uniqueTag",
+          sound:('../../public/job-done.mp3')
+        });
+      notification.onclick = function () {
+        window.open(`${HOST_URL}${action.activities.data[0].route}`);      
+      };
+
+      not_id = action.activities.data[0]._id;
+   }else if(not_id===0){
+      not_id = action.activities.data[0]._id;
+   }
+
 }
 

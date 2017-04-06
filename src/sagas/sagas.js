@@ -12,7 +12,9 @@ import {
   fetchSelectedIssueSaga,
   getCountIssueItemsSaga,
   fetchCommentsSaga,
-  fetchActivitiesSaga
+  fetchActivitiesSaga,
+  NotificationsSaga,
+  fetchActivitiesSocketSaga
 } from "./fetchSagas";
 import {
   addIssueSaga,
@@ -82,7 +84,9 @@ export default function* root(feathersApp) {
     fork(removeIssueSaga,feathersApp),
     fork(addActivitySaga,feathersApp),
     fork(fetchActivitiesSaga,feathersApp),
-    fork(removeActivitySaga,feathersApp)
+    fork(fetchActivitiesSocketSaga,feathersApp),
+    fork(removeActivitySaga,feathersApp),
+    fork(NotificationsSaga,feathersApp)
     
     
   ];
